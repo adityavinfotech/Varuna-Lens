@@ -1,30 +1,78 @@
-# Varuna Lens dashboard
+# 🌊 Varuna Lens
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/adityavinfotech/Varuna-Lens)  
+*AI-Powered Conversational Interface for ARGO Ocean Data Discovery and Visualization*
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/pisij78518-1689s-projects/v0-varuna-lens-dashboard)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/VjLQXZbDLFI)
+---
 
-## Overview
+Varuna Lens is an **interactive AI platform** that lets you dive deep into the world’s oceans using ARGO float datasets.  
+It combines **LLMs**, **structured databases**, and **rich visual dashboards** to make complex oceanographic data **accessible, intuitive, and visually stunning**.
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+---
 
-## Deployment
+## ✨ Features
 
-Your project is live at:
+- 💬 **Conversational AI** — Ask natural language questions like:
+  - “Show me salinity profiles in the Arabian Sea (March 2023)”
+  - “Compare temperature trends near the equator for the last 6 months”
 
-**[https://vercel.com/pisij78518-1689s-projects/v0-varuna-lens-dashboard](https://vercel.com/pisij78518-1689s-projects/v0-varuna-lens-dashboard)**
+- 🌍 **Interactive Geospatial Maps** — Explore ARGO float positions, trajectories, and clusters.
 
-## Build your app
+- 📊 **Dynamic Visualizations** — Depth vs. temperature/salinity plots, timelines, comparisons.
 
-Continue building your app on:
+- 📂 **Multi-format Export** — Save insights as CSV, NetCDF, or PNG charts.
 
-**[https://v0.app/chat/projects/VjLQXZbDLFI](https://v0.app/chat/projects/VjLQXZbDLFI)**
+- 🧭 **Accessible to Everyone** — Scientists, students, and policymakers can explore without coding skills.
 
-## How It Works
+---
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## 🛠️ Tech Stack
+
+<details>
+<summary><b>Backend</b></summary>
+
+- Pure Python backend  
+- **Data ingestion:** `xarray`, `netCDF4`, `pandas`  
+- **Database:** PostgreSQL + FAISS/Chroma (vector search)  
+- **LLM Interface:** RAG with Model Context Protocol (MCP)  
+</details>
+
+<details>
+<summary><b>Frontend</b></summary>
+
+- **Framework:** React + Next.js  
+- **UI:** `shadcn/ui` + TailwindCSS (glassmorphism, ocean palette 🌊)  
+- **Visualizations:** Plotly, Leaflet, Recharts  
+</details>
+
+<details>
+<summary><b>Deployment</b></summary>
+
+- Containerized with Docker  
+- Cloud-ready (Vercel/Render for frontend, Supabase/Postgres for backend)  
+</details>
+
+---
+
+## 🚀 Getting Started
+
+```bash
+# 1. Clone Repository
+git clone https://github.com/your-org/varuna-lens.git
+cd varuna-lens
+
+# 2. Setup Environment
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# 3. Download ARGO Dataset (Indian Ocean MVP)
+wget ftp://ftp.ifremer.fr/ifremer/argo/dac/ar_index_global_meta.txt
+
+# 4. Run Backend
+python app/main.py
+
+# 5. Start Frontend
+cd frontend
+npm install
+npm run dev
