@@ -1,4 +1,11 @@
-# 🌊 Varuna Lens
+<table align="center">
+  <tr>
+    <td><img src="https://github.com/adityavinfotech/Varuna-Lens/blob/main/public/images/ocean-wave.png" alt="Varuna Lens Logo" width="50"/></td>
+    <td><h1>Varuna Lens</h1></td>
+  </tr>
+</table>
+
+
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/adityavinfotech/Varuna-Lens)  
 *AI-Powered Conversational Interface for ARGO Ocean Data Discovery and Visualization*
