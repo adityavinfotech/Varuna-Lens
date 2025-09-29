@@ -76,3 +76,8 @@ python app/main.py
 cd frontend
 npm install
 npm run dev
+
+## 🤝 Contributing
+
+Contributions are welcome! 🌊
+Open an issue, share ideas, or submit a PR to make Varuna Lens better.
