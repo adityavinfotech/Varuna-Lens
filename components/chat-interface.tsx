@@ -29,6 +29,24 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
         "Hello! I'm your AI oceanographic assistant. I can help you explore ocean data, analyze float measurements, and visualize marine conditions. What would you like to discover today?",
       timestamp: INITIAL_TIMESTAMP,
     },
+    {
+      id: "2",
+      type: "user",
+      content: "Hi",
+      timestamp: new Date('2024-01-01T12:01:00Z'),
+    },
+    {
+      id: "3",
+      type: "assistant",
+      content: "Hello! How can I help you today?",
+      timestamp: new Date('2024-01-01T12:01:30Z'),
+    },
+    {
+      id: "4",
+      type: "user",
+      content: "Can you show me temperature data for the Arabian Sea region?",
+      timestamp: new Date('2024-01-01T12:02:00Z'),
+    },
   ])
   const [inputValue, setInputValue] = useState("")
   const [isMounted, setIsMounted] = useState(false)
@@ -51,6 +69,31 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
     }
     
     return timestamp.toLocaleTimeString()
+  }
+
+  const getMessageWidth = (content: string) => {
+    const length = content.length
+    
+    // Very short messages (< 20 chars): minimal width
+    if (length < 20) {
+      return "w-fit min-w-[100px] max-w-[200px]"
+    }
+    // Short messages (20-60 chars): small width
+    else if (length < 60) {
+      return "w-fit min-w-[120px] max-w-[300px]"
+    }
+    // Medium messages (60-120 chars): moderate width
+    else if (length < 120) {
+      return "max-w-[50%]"
+    }
+    // Long messages (120-200 chars): larger width
+    else if (length < 200) {
+      return "max-w-[70%]"
+    }
+    // Very long messages (200+ chars): maximum width
+    else {
+      return "max-w-[80%]"
+    }
   }
 
   useEffect(() => {
@@ -146,11 +189,11 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
                       />
                     )}
                   </div>
-                  <div className={`flex-1 max-w-[80%] ${message.type === "user" ? "text-right" : ""}`}>
+                  <div className={`${getMessageWidth(message.content)} ${message.type === "user" ? "text-right ml-auto" : ""}`}>
                     <div
                       className={`rounded-lg p-3 ocean-ripple ${
                         message.type === "user"
-                          ? "bg-primary/20 text-primary-foreground ml-auto"
+                          ? "bg-primary/20 text-primary-foreground"
                           : "bg-muted/50 text-muted-foreground"
                       }`}
                     >
