@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -50,6 +50,7 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
   ])
   const [inputValue, setInputValue] = useState("")
   const [isMounted, setIsMounted] = useState(false)
+  const processedInitialMessage = useRef<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -104,29 +105,54 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
     scrollToBottom()
   }, [messages])
 
-  useEffect(() => {
-    if (initialMessage) {
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        type: "user",
-        content: initialMessage,
+  const processInitialMessage = useCallback((message: string) => {
+    // Check if this exact message has already been processed
+    if (processedInitialMessage.current === message) {
+      return
+    }
+    
+    // Mark this message as processed immediately
+    processedInitialMessage.current = message
+    
+    const userMessage: Message = {
+      id: `initial-${Date.now()}`,
+      type: "user",
+      content: message,
+      timestamp: new Date(),
+    }
+
+    setMessages((prev) => {
+      // Double-check that we don't already have this message
+      const messageExists = prev.some(msg => 
+        msg.type === "user" && 
+        msg.content === message && 
+        msg.id.startsWith('initial-')
+      )
+      
+      if (messageExists) {
+        return prev
+      }
+      
+      return [...prev, userMessage]
+    })
+
+    // Simulate AI response to initial message
+    setTimeout(() => {
+      const aiResponse: Message = {
+        id: `initial-response-${Date.now()}`,
+        type: "assistant",
+        content: `I'll analyze the ${message.toLowerCase()} data for you. Let me pull up the relevant oceanographic measurements and display them in the visualization panel.`,
         timestamp: new Date(),
       }
+      setMessages((prev) => [...prev, aiResponse])
+    }, 1000)
+  }, [])
 
-      setMessages((prev) => [...prev, userMessage])
-
-      // Simulate AI response to initial message
-      setTimeout(() => {
-        const aiResponse: Message = {
-          id: (Date.now() + 1).toString(),
-          type: "assistant",
-          content: `I'll analyze the ${initialMessage.toLowerCase()} data for you. Let me pull up the relevant oceanographic measurements and display them in the visualization panel.`,
-          timestamp: new Date(),
-        }
-        setMessages((prev) => [...prev, aiResponse])
-      }, 1000)
+  useEffect(() => {
+    if (initialMessage && initialMessage.trim()) {
+      processInitialMessage(initialMessage.trim())
     }
-  }, [initialMessage])
+  }, [initialMessage, processInitialMessage])
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return
