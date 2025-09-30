@@ -1,27 +1,53 @@
 "use client"
 
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { TrendingUp, TrendingDown, Activity } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { TrendingUp, TrendingDown, Activity, Maximize2, Minimize2 } from "lucide-react"
 
 interface DataVisualizationProps {
   type: "profiles" | "trends"
 }
 
 export function DataVisualization({ type }: DataVisualizationProps) {
+  const [expandedGraph, setExpandedGraph] = useState<'temperature' | 'salinity' | null>(null)
+
+  const toggleExpand = (graph: 'temperature' | 'salinity') => {
+    setExpandedGraph(expandedGraph === graph ? null : graph)
+  }
   if (type === "profiles") {
     return (
       <div className="h-full space-y-4">
-        {/* Profile Chart */}
-        <Card className="glass-card flex-1">
+        {/* Temperature Profile Chart */}
+        <Card className={`glass-card transition-all duration-300 ${
+          expandedGraph === 'temperature' ? 'fixed inset-4 z-50 shadow-2xl' : 
+          expandedGraph === 'salinity' ? 'opacity-50 pointer-events-none' : 'flex-1'
+        }`}>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Activity className="h-5 w-5 text-primary" />
-              Temperature vs Depth Profile
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Activity className="h-5 w-5 text-primary" />
+                Temperature vs Depth Profile
+              </CardTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ocean-ripple rounded-full h-8 w-8 hover:bg-ocean-pale/50 hover:text-ocean-primary transition-all duration-200"
+                onClick={() => toggleExpand('temperature')}
+              >
+                {expandedGraph === 'temperature' ? (
+                  <Minimize2 className="h-4 w-4" />
+                ) : (
+                  <Maximize2 className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="h-64 relative">
+            <div className={`relative transition-all duration-300 ${
+              expandedGraph === 'temperature' ? 'h-96' : 'h-64'
+            }`}>
               {/* Simulated Profile Chart */}
               <div className="absolute inset-0 bg-gradient-to-r from-chart-1/20 via-chart-2/30 to-chart-3/20 rounded-lg">
                 <svg className="w-full h-full">
@@ -37,6 +63,30 @@ export function DataVisualization({ type }: DataVisualizationProps) {
                   {[50, 150, 250, 350].map((x, i) => (
                     <circle key={i} cx={x} cy={20 + i * 60} r="4" className="fill-primary ocean-glow" />
                   ))}
+                  
+                  {/* Enhanced details when expanded */}
+                  {expandedGraph === 'temperature' && (
+                    <>
+                      {/* Additional data points */}
+                      {[75, 125, 200, 275, 325].map((x, i) => (
+                        <circle key={`extra-${i}`} cx={x} cy={30 + i * 50} r="3" className="fill-teal-primary opacity-70" />
+                      ))}
+                      {/* Grid lines */}
+                      {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <line
+                          key={`grid-${i}`}
+                          x1="30"
+                          y1={20 + i * 60}
+                          x2="380"
+                          y2={20 + i * 60}
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          className="text-muted-foreground opacity-30"
+                          strokeDasharray="2,2"
+                        />
+                      ))}
+                    </>
+                  )}
                 </svg>
               </div>
 
@@ -47,6 +97,24 @@ export function DataVisualization({ type }: DataVisualizationProps) {
               <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
                 Temperature (°C)
               </div>
+              
+              {/* Enhanced info when expanded */}
+              {expandedGraph === 'temperature' && (
+                <div className="absolute top-2 right-2 bg-card/90 backdrop-blur-sm rounded-lg p-3 text-xs space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    <span>Primary Float F001</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-teal-primary" />
+                    <span>Secondary Floats</span>
+                  </div>
+                  <div className="text-muted-foreground mt-2">
+                    <div>Max: 29.2°C at 10m</div>
+                    <div>Min: 24.8°C at 200m</div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-4 mt-4 text-sm">
@@ -57,17 +125,44 @@ export function DataVisualization({ type }: DataVisualizationProps) {
               <Badge variant="secondary" className="bg-accent/20">
                 Latest: 28.5°C at 50m
               </Badge>
+              {expandedGraph === 'temperature' && (
+                <Badge variant="outline" className="border-teal-primary/30 text-teal-primary">
+                  Expanded View
+                </Badge>
+              )}
             </div>
           </CardContent>
         </Card>
 
         {/* Salinity Profile */}
-        <Card className="glass-card">
+        <Card className={`glass-card transition-all duration-300 ${
+          expandedGraph === 'salinity' ? 'fixed inset-4 z-50 shadow-2xl' : 
+          expandedGraph === 'temperature' ? 'opacity-50 pointer-events-none' : ''
+        }`}>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Salinity Profile</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Activity className="h-5 w-5 text-chart-2" />
+                Salinity Profile
+              </CardTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ocean-ripple rounded-full h-8 w-8 hover:bg-teal-light/20 hover:text-teal-primary transition-all duration-200"
+                onClick={() => toggleExpand('salinity')}
+              >
+                {expandedGraph === 'salinity' ? (
+                  <Minimize2 className="h-4 w-4" />
+                ) : (
+                  <Maximize2 className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="h-32 relative">
+            <div className={`relative transition-all duration-300 ${
+              expandedGraph === 'salinity' ? 'h-96' : 'h-32'
+            }`}>
               <div className="absolute inset-0 bg-gradient-to-r from-chart-2/20 to-chart-4/20 rounded-lg">
                 <svg className="w-full h-full">
                   <path
@@ -77,9 +172,56 @@ export function DataVisualization({ type }: DataVisualizationProps) {
                     fill="none"
                     className="text-chart-2"
                   />
+                  
+                  {/* Enhanced details when expanded */}
+                  {expandedGraph === 'salinity' && (
+                    <>
+                      {/* Data points */}
+                      {[50, 150, 250, 350, 450].map((x, i) => (
+                        <circle key={i} cx={x} cy={60 - i * 5 + (i % 2) * 10} r="3" className="fill-chart-2" />
+                      ))}
+                      {/* Area fill */}
+                      <path
+                        d="M 50 60 Q 150 40 250 50 Q 350 45 450 55 L 450 300 L 50 300 Z"
+                        fill="currentColor"
+                        className="text-chart-2/10"
+                      />
+                    </>
+                  )}
                 </svg>
               </div>
+              
+              {/* Enhanced info when expanded */}
+              {expandedGraph === 'salinity' && (
+                <>
+                  <div className="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-muted-foreground">
+                    Depth (m)
+                  </div>
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
+                    Salinity (PSU)
+                  </div>
+                  <div className="absolute top-2 right-2 bg-card/90 backdrop-blur-sm rounded-lg p-3 text-xs space-y-1">
+                    <div className="text-muted-foreground">
+                      <div>Max: 35.8 PSU at 150m</div>
+                      <div>Min: 34.2 PSU at surface</div>
+                      <div>Avg: 35.1 PSU</div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
+            
+            {expandedGraph === 'salinity' && (
+              <div className="flex items-center gap-4 mt-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-chart-2" />
+                  <span>Salinity Measurements</span>
+                </div>
+                <Badge variant="outline" className="border-chart-2/30 text-chart-2">
+                  Expanded View
+                </Badge>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

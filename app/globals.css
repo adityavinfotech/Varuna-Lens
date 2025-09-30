@@ -4,76 +4,124 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Replaced blue-based colors with neutral grays and warm accents */
-  --background: oklch(0.98 0.005 0);
-  --foreground: oklch(0.145 0.02 0);
-  --card: oklch(0.99 0.005 0);
-  --card-foreground: oklch(0.145 0.02 0);
-  --popover: oklch(0.99 0.005 0);
-  --popover-foreground: oklch(0.145 0.02 0);
-  --primary: oklch(0.4 0.1 0);
-  --primary-foreground: oklch(0.985 0.005 0);
-  --secondary: oklch(0.94 0.01 0);
-  --secondary-foreground: oklch(0.205 0.02 0);
-  --muted: oklch(0.94 0.01 0);
-  --muted-foreground: oklch(0.556 0.02 0);
-  --accent: oklch(0.6 0.08 30);
-  --accent-foreground: oklch(0.985 0.005 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0.005 0);
-  --border: oklch(0.9 0.01 0);
-  --input: oklch(0.9 0.01 0);
-  --ring: oklch(0.4 0.1 0);
-  --chart-1: oklch(0.4 0.1 0);
-  --chart-2: oklch(0.5 0.08 30);
-  --chart-3: oklch(0.35 0.12 0);
-  --chart-4: oklch(0.6 0.08 45);
-  --chart-5: oklch(0.3 0.15 0);
+  /* Ocean-themed color palette for Varuna Lens */
+  
+  /* Primary Ocean Blues */
+  --ocean-deep: #0B1426;
+  --ocean-primary: #1E3A8A;
+  --ocean-medium: #3B82F6;
+  --ocean-light: #60A5FA;
+  --ocean-pale: #DBEAFE;
+  
+  /* Coral & Warm Accents */
+  --coral-primary: #F97316;
+  --coral-light: #FDBA74;
+  --coral-pale: #FED7AA;
+  
+  /* Teal & Aqua */
+  --teal-primary: #0D9488;
+  --teal-light: #5EEAD4;
+  --aqua-glow: #22D3EE;
+  
+  /* Glass Morphism */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --backdrop: rgba(15, 23, 42, 0.8);
+  
+  /* UI Color Mappings */
+  --background: #FFFFFF;
+  --foreground: var(--ocean-deep);
+  --card: var(--ocean-pale);
+  --card-foreground: var(--ocean-deep);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--ocean-deep);
+  --primary: var(--ocean-primary);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--ocean-pale);
+  --secondary-foreground: var(--ocean-deep);
+  --muted: #F1F5F9;
+  --muted-foreground: #475569;
+  --accent: var(--coral-primary);
+  --accent-foreground: #FFFFFF;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #E2E8F0;
+  --input: #F8FAFC;
+  --ring: var(--ocean-medium);
+  
+  /* Data Visualization Colors */
+  --chart-1: var(--ocean-primary);
+  --chart-2: var(--teal-primary);
+  --chart-3: var(--coral-primary);
+  --chart-4: var(--aqua-glow);
+  --chart-5: var(--ocean-light);
+  
+  /* Temperature Gradient */
+  --temp-cold: #1E40AF;
+  --temp-cool: #3B82F6;
+  --temp-neutral: #10B981;
+  --temp-warm: #F59E0B;
+  --temp-hot: #EF4444;
+  
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0.005 0);
-  --sidebar-foreground: oklch(0.145 0.02 0);
-  --sidebar-primary: oklch(0.4 0.1 0);
-  --sidebar-primary-foreground: oklch(0.985 0.005 0);
-  --sidebar-accent: oklch(0.94 0.01 0);
-  --sidebar-accent-foreground: oklch(0.205 0.02 0);
-  --sidebar-border: oklch(0.9 0.01 0);
-  --sidebar-ring: oklch(0.4 0.1 0);
+  --sidebar: var(--ocean-pale);
+  --sidebar-foreground: var(--ocean-deep);
+  --sidebar-primary: var(--ocean-primary);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--coral-pale);
+  --sidebar-accent-foreground: var(--ocean-deep);
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: var(--ocean-medium);
 }
 
 .dark {
-  /* Updated dark theme with neutral grays and subtle warm accents */
-  --background: oklch(0.08 0.01 0);
-  --foreground: oklch(0.9 0.01 0);
-  --card: oklch(0.1 0.01 0);
-  --card-foreground: oklch(0.9 0.01 0);
-  --popover: oklch(0.1 0.01 0);
-  --popover-foreground: oklch(0.9 0.01 0);
-  --primary: oklch(0.7 0.08 0);
-  --primary-foreground: oklch(0.08 0.01 0);
-  --secondary: oklch(0.15 0.01 0);
-  --secondary-foreground: oklch(0.9 0.01 0);
-  --muted: oklch(0.15 0.01 0);
-  --muted-foreground: oklch(0.6 0.01 0);
-  --accent: oklch(0.65 0.06 30);
-  --accent-foreground: oklch(0.08 0.01 0);
-  --destructive: oklch(0.5 0.2 25);
-  --destructive-foreground: oklch(0.9 0.01 0);
-  --border: oklch(0.2 0.01 0);
-  --input: oklch(0.2 0.01 0);
-  --ring: oklch(0.7 0.08 0);
-  --chart-1: oklch(0.7 0.08 0);
-  --chart-2: oklch(0.65 0.06 30);
-  --chart-3: oklch(0.6 0.1 0);
-  --chart-4: oklch(0.75 0.06 45);
-  --chart-5: oklch(0.55 0.12 0);
-  --sidebar: oklch(0.12 0.01 0);
-  --sidebar-foreground: oklch(0.9 0.01 0);
-  --sidebar-primary: oklch(0.7 0.08 0);
-  --sidebar-primary-foreground: oklch(0.08 0.01 0);
-  --sidebar-accent: oklch(0.15 0.01 0);
-  --sidebar-accent-foreground: oklch(0.9 0.01 0);
-  --sidebar-border: oklch(0.2 0.01 0);
-  --sidebar-ring: oklch(0.7 0.08 0);
+  /* Ocean-themed dark mode for Varuna Lens */
+  
+  /* Dark Ocean Colors */
+  --dark-ocean-deep: #0F172A;
+  --dark-ocean-medium: #1E293B;
+  --dark-ocean-light: #334155;
+  
+  /* UI Color Mappings for Dark Mode */
+  --background: var(--dark-ocean-deep);
+  --foreground: #F8FAFC;
+  --card: var(--dark-ocean-medium);
+  --card-foreground: #F8FAFC;
+  --popover: var(--dark-ocean-medium);
+  --popover-foreground: #F8FAFC;
+  --primary: var(--ocean-light);
+  --primary-foreground: var(--dark-ocean-deep);
+  --secondary: var(--dark-ocean-light);
+  --secondary-foreground: #F8FAFC;
+  --muted: var(--dark-ocean-light);
+  --muted-foreground: #CBD5E1;
+  --accent: var(--coral-light);
+  --accent-foreground: var(--dark-ocean-deep);
+  --destructive: #EF4444;
+  --destructive-foreground: #F8FAFC;
+  --border: var(--dark-ocean-light);
+  --input: var(--dark-ocean-medium);
+  --ring: var(--ocean-light);
+  
+  /* Dark Mode Data Visualization */
+  --chart-1: var(--ocean-light);
+  --chart-2: var(--teal-light);
+  --chart-3: var(--coral-light);
+  --chart-4: var(--aqua-glow);
+  --chart-5: var(--ocean-medium);
+  
+  /* Dark Glass Morphism */
+  --glass-bg: rgba(30, 41, 59, 0.8);
+  --glass-border: rgba(148, 163, 184, 0.2);
+  
+  --sidebar: var(--dark-ocean-medium);
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-primary: var(--ocean-light);
+  --sidebar-primary-foreground: var(--dark-ocean-deep);
+  --sidebar-accent: var(--dark-ocean-light);
+  --sidebar-accent-foreground: #F8FAFC;
+  --sidebar-border: var(--dark-ocean-light);
+  --sidebar-ring: var(--ocean-light);
 }
 
 @theme inline {
@@ -118,21 +166,31 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: rgb(from var(--ring) r g b / 0.5);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
 
-/* Updated oceanic animations to use neutral colors instead of cyan/blue */
+/* Ocean-themed animations with new color palette */
 @layer components {
   .glass-card {
-    @apply backdrop-blur-md bg-card/80 border border-border/30 shadow-lg;
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    background: var(--glass-bg);
   }
 
   .ocean-glow {
-    @apply shadow-lg shadow-gray-500/20 hover:shadow-gray-500/30 transition-shadow duration-300;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .ocean-glow:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
   }
 
   .wave-animation {
@@ -151,7 +209,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(156, 163, 175, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
     animation: ripple 2s infinite;
   }
 
@@ -166,12 +224,35 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(circle at 20% 80%, rgba(156, 163, 175, 0.1) 1px, transparent 1px),
-      radial-gradient(circle at 80% 20%, rgba(107, 114, 128, 0.1) 1px, transparent 1px),
-      radial-gradient(circle at 40% 40%, rgba(156, 163, 175, 0.05) 1px, transparent 1px);
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(219, 234, 254, 0.4) 1px, transparent 1px),
+      radial-gradient(circle at 80% 20%, rgba(94, 234, 212, 0.3) 1px, transparent 1px),
+      radial-gradient(circle at 40% 40%, rgba(34, 211, 238, 0.2) 1px, transparent 1px);
     background-size: 50px 50px, 80px 80px, 120px 120px;
     animation: float 20s linear infinite;
     pointer-events: none;
+  }
+
+  /* Temperature visualization classes */
+  .temp-cold { background-color: var(--temp-cold); }
+  .temp-cool { background-color: var(--temp-cool); }
+  .temp-neutral { background-color: var(--temp-neutral); }
+  .temp-warm { background-color: var(--temp-warm); }
+  .temp-hot { background-color: var(--temp-hot); }
+
+  /* Float status indicators */
+  .float-active { 
+    background-color: var(--ocean-medium);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  
+  .float-inactive { 
+    background-color: var(--muted-foreground);
+  }
+  
+  .float-maintenance { 
+    background-color: var(--coral-primary);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
   }
 }
 
