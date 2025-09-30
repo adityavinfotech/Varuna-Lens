@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,12 +11,14 @@ interface Message {
   type: "user" | "assistant"
   content: string
   timestamp: Date
-  suggestions?: string[]
 }
 
 interface ChatInterfaceProps {
   initialMessage?: string | null
 }
+
+// Create a stable timestamp outside the component to avoid hydration issues
+const INITIAL_TIMESTAMP = new Date('2024-01-01T12:00:00Z')
 
 export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
@@ -25,16 +27,39 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
       type: "assistant",
       content:
         "Hello! I'm your AI oceanographic assistant. I can help you explore ocean data, analyze float measurements, and visualize marine conditions. What would you like to discover today?",
-      timestamp: new Date(),
-      suggestions: [
-        "Show salinity in Arabian Sea",
-        "Temperature profiles near equator",
-        "Recent float trajectories",
-        "Compare seasonal patterns",
-      ],
+      timestamp: INITIAL_TIMESTAMP,
     },
   ])
   const [inputValue, setInputValue] = useState("")
+  const [isMounted, setIsMounted] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const handleQuickAction = (action: string) => {
+    setInputValue(action)
+  }
+
+  const formatTimestamp = (timestamp: Date) => {
+    if (!isMounted) return ""
+    
+    // Show "Just now" for the initial message
+    if (timestamp === INITIAL_TIMESTAMP) {
+      return "Just now"
+    }
+    
+    return timestamp.toLocaleTimeString()
+  }
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   useEffect(() => {
     if (initialMessage) {
@@ -85,9 +110,6 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
     }, 1000)
   }
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setInputValue(suggestion)
-  }
 
   return (
     <Card className="glass-card h-full flex flex-col floating-particles">
@@ -115,7 +137,6 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
                     {message.type === "user" ? (
                       <User className="h-4 w-4" />
                     ) : (
-                      /* Replaced Bot icon with custom wave image */
                       <Image
                         src="/images/ocean-wave.png"
                         alt="AI Assistant"
@@ -135,31 +156,15 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
                     >
                       <p className="text-sm leading-relaxed">{message.content}</p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">{message.timestamp.toLocaleTimeString()}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {formatTimestamp(message.timestamp)}
+                    </p>
                   </div>
                 </div>
 
-                {/* Suggestions */}
-                {message.suggestions && (
-                  <div className="ml-11 space-y-2">
-                    <p className="text-xs text-muted-foreground">Try asking:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {message.suggestions.map((suggestion, index) => (
-                        <Button
-                          key={index}
-                          variant="outline"
-                          size="sm"
-                          className="text-xs h-7 glass-card hover:bg-accent/20 bg-transparent ocean-ripple"
-                          onClick={() => handleSuggestionClick(suggestion)}
-                        >
-                          {suggestion}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
 
@@ -171,7 +176,14 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Ask about ocean data, float measurements, or marine conditions..."
               className="flex-1 glass-card ocean-ripple"
-              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  if (inputValue.trim()) {
+                    handleSendMessage()
+                  }
+                }
+              }}
             />
             <Button onClick={handleSendMessage} className="ocean-glow" disabled={!inputValue.trim()}>
               <Send className="h-4 w-4" />
@@ -181,15 +193,30 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
           {/* Quick Actions */}
           <div className="flex items-center gap-2 mt-3">
             <span className="text-xs text-muted-foreground">Quick actions:</span>
-            <Button variant="ghost" size="sm" className="h-6 text-xs ocean-ripple">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-6 text-xs ocean-ripple"
+              onClick={() => handleQuickAction("Show temperature data")}
+            >
               <Thermometer className="h-3 w-3 mr-1" />
               Temperature
             </Button>
-            <Button variant="ghost" size="sm" className="h-6 text-xs ocean-ripple">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-6 text-xs ocean-ripple"
+              onClick={() => handleQuickAction("Show salinity data")}
+            >
               <Droplets className="h-3 w-3 mr-1" />
               Salinity
             </Button>
-            <Button variant="ghost" size="sm" className="h-6 text-xs ocean-ripple">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-6 text-xs ocean-ripple"
+              onClick={() => handleQuickAction("Show ocean currents")}
+            >
               <Waves className="h-3 w-3 mr-1" />
               Currents
             </Button>

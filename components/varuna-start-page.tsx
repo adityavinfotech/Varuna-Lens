@@ -93,7 +93,6 @@ export function VarunaStartPage() {
         </div>
       </div>
 
-      {/* Subtle floating particles animation */}
       <div className="absolute inset-0 floating-particles pointer-events-none" />
     </div>
   )
